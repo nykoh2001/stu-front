@@ -64,7 +64,7 @@ box-sizing: border-box;
 padding: 8px 12px;
 `
 
-export const validationMessage = styled.div `
+export const ValidationMessage = styled.div `
 width: 100%;
 display: flex;
 align-items: center;
@@ -72,10 +72,12 @@ color: #ff0000;
 font-size: 13px;
 `
 
-export const withGoogle = styled.div`
-width: 100%;
+export const ButtonContainer = styled.div`
+width: 450px;
+max-width: calc(100% - 20px);
+min-width: 240px;
 display: flex;
 justify-content: center;
-align-items: center;
-
+box-sizing: border-box;
+padding: 8px 12px 8px 30px;
 `

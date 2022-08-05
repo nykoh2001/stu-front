@@ -1,37 +1,40 @@
-import React, { ChangeEventHandler, useEffect, useRef, useState } from "react";
+import React, { ChangeEventHandler, FocusEventHandler, useState } from "react";
 import * as Styled from "./Styled";
+import { Button } from "@mui/material";
 
+const ValidateMessage = ({ index }: { index: number }): JSX.Element => {
+  const msgs = [
+    "nickname은 5자 이상이어야 합니다.",
+    // 이미 사용되는 nickname입니다.
+    "id는 10자 이상이어야 합니다.",
+    // 중복되는 Id 입니다.
+    "pw는 10자 이상이어야 합니다",
+    "pw와 일치하지 않습니다.",
+  ];
+  return (
+    // index, error type에 따라 메세지 내용 다르게
+    <Styled.ValidationMessage>{msgs[index]}</Styled.ValidationMessage>
+  );
+};
 const Input = ({
   placeholder,
   handleInput,
+  blurred,
+  type,
 }: {
   placeholder: string;
   handleInput: ChangeEventHandler;
+  blurred: FocusEventHandler;
+  type: string;
 }): JSX.Element => {
-  const inputRef = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    console.log("changed");
-  }, [inputRef?.current?.checked]);
-
   return (
     <Styled.Input
       placeholder={placeholder}
-      ref={inputRef}
-      checked={inputRef.current === document.activeElement}
       onChange={handleInput}
       required={true}
+      onBlur={blurred}
+      type={type}
     />
-  );
-};
-
-const ValidateMessage = ({ index }: { index: number }): JSX.Element => {
-  const labels = ["nickname", "id", "pw", "pw check"];
-  return (
-    // index, error type에 따라 메세지 내용 다르게
-    <Styled.validationMessage>
-      {labels[index]}를 다시 입력해주세요
-    </Styled.validationMessage>
   );
 };
 
@@ -40,49 +43,55 @@ const SignUp = (): JSX.Element => {
   const [Pw, setPW] = useState("");
   const [Nickname, setNickname] = useState("");
   const [PwCheck, setPwCheck] = useState("");
-  const validated = [true, true, true, true];
 
-  const focusCheck = (e: any, index: number): boolean => {
-    validated[index] = e.target.checked;
-    return e.target.checked;
-  };
+  const [IdValidate, setIdValidate] = useState(true);
+  const [PwValidate, setPwValidate] = useState(true);
+  const [NicknameValidate, setNicknameValidate] = useState(true);
+  const [PwCheckValidate, setPwCheckValidate] = useState(true);
 
   const handleNickname = (event: any): void => {
     setNickname(event.target.value);
-    const focused = focusCheck(event, 0);
-    if (!focused && Nickname.length < 5 && Nickname.length > 0) {
+  };
+  const nicknameValidation = (): void => {
+    if (Nickname.length < 5 && Nickname.length > 0) {
       // 중복 확인 조건 추가
-      validated[0] = false;
+      setNicknameValidate(false);
     } else {
-      validated[0] = true;
+      setNicknameValidate(true);
     }
   };
+
   const handleId = (event: any): void => {
     setId(event.target.value);
-    const focused = focusCheck(event, 1);
-    if (!focused && Id.length > 0 && Id.length < 10) {
+  };
+  const idValidation = (): void => {
+    if (Id.length > 0 && Id.length < 10) {
       //  조건에 중복확인도 추가
-      validated[1] = false;
+      setIdValidate(false);
     } else {
-      validated[1] = true;
+      setIdValidate(true);
     }
   };
+
   const handlePw = (event: any): void => {
     setPW(event.target.value);
-    const focused = focusCheck(event, 2);
-    if (!focused && Pw.length < 10 && Pw.length > 0) {
-      validated[2] = false;
+  };
+  const pwValidation = (): void => {
+    if (Pw.length < 10 && Pw.length > 0) {
+      setPwValidate(false);
     } else {
-      validated[2] = true;
+      setPwValidate(true);
     }
   };
+
   const handlePwCheck = (event: any): void => {
     setPwCheck(event.target.value);
-    const focused = focusCheck(event, 3);
-    if (!focused && Pw === PwCheck && PwCheck.length > 0) {
-      validated[3] = false;
+  };
+  const pwCheckValidation = (): void => {
+    if (Pw !== PwCheck && PwCheck.length > 0) {
+      setPwCheckValidate(false);
     } else {
-      validated[3] = true;
+      setPwCheckValidate(true);
     }
   };
 
@@ -93,31 +102,57 @@ const SignUp = (): JSX.Element => {
         <Styled.Info>
           <Styled.InputLabel>Nickname</Styled.InputLabel>
           <Styled.InputWrapper>
-            <Input placeholder="닉네임 입력" handleInput={handleNickname} />
-            {validated[0] === false ? <ValidateMessage index={0} /> : null}
+            <Input
+              placeholder="닉네임 입력"
+              handleInput={handleNickname}
+              blurred={nicknameValidation}
+              type="text"
+            />
+            {NicknameValidate === false ? <ValidateMessage index={0} /> : null}
           </Styled.InputWrapper>
         </Styled.Info>
         <Styled.Info>
           <Styled.InputLabel>ID</Styled.InputLabel>
           <Styled.InputWrapper>
-            <Input placeholder="아이디 입력" handleInput={handleId} />
-            {validated[1] === false ? <ValidateMessage index={1} /> : null}
+            <Input
+              placeholder="아이디 입력"
+              handleInput={handleId}
+              blurred={idValidation}
+              type="text"
+            />
+            {IdValidate === false ? <ValidateMessage index={1} /> : null}
           </Styled.InputWrapper>
         </Styled.Info>
         <Styled.Info>
           <Styled.InputLabel>PW</Styled.InputLabel>
           <Styled.InputWrapper>
-            <Input placeholder="패스워드 입력" handleInput={handlePw} />
-            {validated[2] === false ? <ValidateMessage index={2} /> : null}
+            <Input
+              placeholder="패스워드 입력"
+              handleInput={handlePw}
+              blurred={pwValidation}
+              type="password"
+            />
+            {PwValidate === false ? <ValidateMessage index={2} /> : null}
           </Styled.InputWrapper>
         </Styled.Info>
         <Styled.Info>
           <Styled.InputLabel>PW check</Styled.InputLabel>
           <Styled.InputWrapper>
-            <Input placeholder="패스워드 확인" handleInput={handlePwCheck} />
-            {validated[3] === false ? <ValidateMessage index={3} /> : null}
+            <Input
+              placeholder="패스워드 확인"
+              handleInput={handlePwCheck}
+              blurred={pwCheckValidation}
+              type="password"
+            />
+            {PwCheckValidate === false ? <ValidateMessage index={3} /> : null}
           </Styled.InputWrapper>
         </Styled.Info>
+        <Styled.ButtonContainer>
+          <Button variant="contained">Sign up</Button>
+        </Styled.ButtonContainer>
+        <Styled.ButtonContainer>
+          <Button>Sign up With Google</Button>
+        </Styled.ButtonContainer>
       </Styled.SignUpWrapper>
     </Styled.Container>
   );
