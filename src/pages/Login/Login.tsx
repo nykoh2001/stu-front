@@ -1,5 +1,5 @@
 import React, { ChangeEventHandler, useState } from "react";
-import useNavigate from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import * as Styled from "./Styled";
 import { Button } from "@mui/material";
 
@@ -29,10 +29,10 @@ const Login = (): JSX.Element => {
     setPw(e.target.value);
   };
 
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const toSignUp = (): void => {
-    // navigate("/register", { replace: true });
+    navigate("/register", { replace: true });
   };
 
   return (
