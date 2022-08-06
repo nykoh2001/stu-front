@@ -65,10 +65,6 @@ const SearchField = (): JSX.Element => {
   );
 };
 
-const resized = (): void => {
-  // 화면 크기에 따라 Pagination
-};
-
 const LiveList = (): JSX.Element => {
   const [page, setPage] = useState(1);
   const handlePage = (e: any): void => {
