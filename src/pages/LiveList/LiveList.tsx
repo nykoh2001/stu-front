@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import * as Styled from "./Styled";
 import Header from "component/Header/Header";
 import { Pagination } from "@mui/material";
@@ -83,34 +83,51 @@ const LiveList = (): JSX.Element => {
     } else {
       setPage(nowPage);
     }
-    console.log(page);
   };
+
+  const [windowSize, setWindowSize] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  });
+  const [display, setDisplay] = useState(4);
+
+  const handleResize = (): void => {
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+    setWindowSize({
+      width: width,
+      height: height,
+    });
+    if (width > 1400) {
+      setDisplay(4);
+    } else if (width >= 1090) {
+      setDisplay(3);
+    } else if (width >= 740) {
+      setDisplay(2);
+    } else {
+      setDisplay(1);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   return (
     <Styled.Container>
       <Header />
       <Styled.LiveContainer>
         <SearchField />
-        <Live title="TITLE" channel="Channel" viewers="2" />
-        <Live title="TITLE" channel="Channel" viewers="2" />
-        <Live title="TITLE" channel="Channel" viewers="2" />
-        <Live title="TITLE" channel="Channel" viewers="2" />
-        <Live title="TITLE" channel="Channel" viewers="2" />
-        <Live title="TITLE" channel="Channel" viewers="2" />
-        <Live title="TITLE" channel="Channel" viewers="2" />
-        <Live title="TITLE" channel="Channel" viewers="2" />
-        <Live title="TITLE" channel="Channel" viewers="2" />
-        <Live title="TITLE" channel="Channel" viewers="2" />
-        <Live title="TITLE" channel="Channel" viewers="2" />
-        <Live title="TITLE" channel="Channel" viewers="2" />
-        <Live title="TITLE" channel="Channel" viewers="2" />
-        <Live title="TITLE" channel="Channel" viewers="2" />
-        <Live title="TITLE" channel="Channel" viewers="2" />
-        <Live title="TITLE" channel="Channel" viewers="2" />
+        {[...Array(display * 4)].map((i: number) => (
+          <Live title="TITLE" channel="Channel" viewers="2" />
+        ))}
       </Styled.LiveContainer>
       <Styled.PaginationContainer>
         <Pagination
-          count={1}
+          count={5}
           variant="outlined"
           shape="rounded"
           onChange={handlePage}
