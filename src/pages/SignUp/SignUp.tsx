@@ -1,6 +1,7 @@
 import React, { ChangeEventHandler, FocusEventHandler, useState } from "react";
 import * as Styled from "./Styled";
 import { Button } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const ValidateMessage = ({ index }: { index: number }): JSX.Element => {
   const msgs = [
@@ -95,6 +96,17 @@ const SignUp = (): JSX.Element => {
     }
   };
 
+  const navigate = useNavigate();
+  const clickSignUp = (): void => {
+    // axios request
+    navigate("/", { replace: true });
+  };
+
+  const clickSignUpGoogle = (): void => {
+    // axios request
+    // navigate
+  };
+
   return (
     <Styled.Container>
       <Styled.SignUpWrapper>
@@ -148,10 +160,12 @@ const SignUp = (): JSX.Element => {
           </Styled.InputWrapper>
         </Styled.Info>
         <Styled.ButtonContainer>
-          <Button variant="contained">Sign up</Button>
+          <Button variant="contained" onClick={clickSignUp}>
+            Sign up
+          </Button>
         </Styled.ButtonContainer>
         <Styled.ButtonContainer>
-          <Button>Sign up With Google</Button>
+          <Button onClick={clickSignUpGoogle}>Sign up With Google</Button>
         </Styled.ButtonContainer>
       </Styled.SignUpWrapper>
     </Styled.Container>
