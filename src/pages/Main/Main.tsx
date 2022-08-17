@@ -7,7 +7,7 @@ const Main = (): JSX.Element => {
   return (
     <Styled.Container>
       <Header />
-      <Map />
+      <Map latitude={37} longitude={127} />
     </Styled.Container>
   );
 };

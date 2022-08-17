@@ -1,18 +1,45 @@
 import React, { useEffect } from "react";
 import * as Styled from "./Styled";
-const { kakao } = window as any;
+import { NEXT_PUBLIC_KAKAOMAP_APPKEY } from "util/global";
+import { MapsHomeWork } from "@mui/icons-material";
 
-const Map = (): JSX.Element => {
-  kakao.maps.load(() => {
-    const container = document.getElementById("map");
+interface MapProps {
+  latitude: number;
+  longitude: number;
+}
 
-    const option = {
-      center: new kakao.maps.LatlLng(37, 127),
-      level: 3,
+const Map = ({ latitude, longitude }: MapProps): JSX.Element => {
+  useEffect(() => {
+    const mapScript = document.createElement("script");
+
+    mapScript.async = true;
+    mapScript.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${NEXT_PUBLIC_KAKAOMAP_APPKEY}&autoload=false`;
+
+    document.head.appendChild(mapScript);
+
+    const onLoadKakaoMap = () => {
+      window.kakao.maps.load(() => {
+        const mapContainer = document.querySelector("#map");
+
+        const option = {
+          center: new window.kakao.maps.LatLng(latitude, longitude),
+          level: 13,
+        };
+        const map = new window.kakao.maps.Map(mapContainer, option);
+        const markerPosition = new window.kakao.maps.LatLng(
+          latitude,
+          longitude
+        );
+        const marker = new window.kakao.maps.Marker({
+          position: markerPosition,
+        });
+        marker.setMap(map);
+      });
     };
+    mapScript.addEventListener("load", onLoadKakaoMap);
 
-    const map = new kakao.maps.Map(container, option);
-  });
+    return () => mapScript.removeEventListener("load", onLoadKakaoMap);
+  }, [latitude, longitude]);
 
   return <Styled.Container id="map"></Styled.Container>;
 };

@@ -5,6 +5,12 @@ import Login from "pages/Login/Login";
 import SignUp from "pages/SignUp/SignUp";
 import Main from "pages/Main/Main";
 
+declare global {
+  interface Window {
+    kakao: any;
+  }
+}
+
 const App = () => {
   return (
     <BrowserRouter>
