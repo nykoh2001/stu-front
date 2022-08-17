@@ -87,8 +87,8 @@ const Header = (): JSX.Element => {
           onClick={toMyPage}
         />
         <HeaderIcon
-          src1="https://cdn-icons.flaticon.com/png/512/5668/premium/5668088.png?token=exp=1659767004~hmac=9487c282688ad4442f2680568d8a0a6a"
-          src2="https://cdn-icons.flaticon.com/png/512/4467/premium/4467457.png?token=exp=1659767571~hmac=5a5ebace33ec7a8c367b98e4e75adee2"
+          src1="https://cdn-icons-png.flaticon.com/512/1159/1159798.png"
+          src2="https://cdn-icons-png.flaticon.com/512/1160/1160041.png"
           onClick={toStartLive}
         />
         <HeaderIcon
@@ -96,7 +96,7 @@ const Header = (): JSX.Element => {
           src2="https://cdn-icons-png.flaticon.com/512/2406/2406849.png"
           onClick={toLiveList}
         />
-        <HeaderTypo onClick={toLogin} typo="Login" variant="caption" />
+        <HeaderTypo onClick={toLogin} typo="Logout" variant="caption" />
       </Styled.HeaderTypoContainer>
     </Styled.Container>
   );
