@@ -2,6 +2,7 @@ import React, { ChangeEventHandler, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import * as Styled from "./Styled";
 import { Button } from "@mui/material";
+import axios from "axios";
 
 const Input = ({
   placeholder,
@@ -35,6 +36,19 @@ const Login = (): JSX.Element => {
     navigate("/register", { replace: true });
   };
 
+  const clickLogin = (): void => {
+    navigate("/", { replace: true });
+  };
+
+  const clickGoogleLogin = (): void => {
+    axios
+      .get("http://localhost:8080/oauth2/authorization/google")
+      .then((res) => {
+        console.log("res: ", res);
+      })
+      .catch((e) => console.log("err: ", e));
+  };
+
   return (
     <Styled.Container>
       <Styled.LoginForm>
@@ -49,10 +63,12 @@ const Login = (): JSX.Element => {
         </Styled.Info>
         <Styled.ToSignUp onClick={toSignUp}>회원가입</Styled.ToSignUp>
         <Styled.ButtonContainer>
-          <Button variant="contained">Login</Button>
+          <Button onClick={clickLogin} variant="contained">
+            Login
+          </Button>
         </Styled.ButtonContainer>
         <Styled.ButtonContainer>
-          <Button>LOGIN WITH GOOGLE</Button>
+          <Button onClick={clickGoogleLogin}>LOGIN WITH GOOGLE</Button>
         </Styled.ButtonContainer>
       </Styled.LoginForm>
     </Styled.Container>
