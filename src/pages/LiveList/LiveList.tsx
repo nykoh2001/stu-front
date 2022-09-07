@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import * as Styled from "./Styled";
 import Header from "component/Header/Header";
 import { Pagination } from "@mui/material";
+import StartLive from "component/StartLive/StartLive";
 
 const LiveTitle = ({ typo }: { typo: string }): JSX.Element => {
   return <Styled.LiveTitle variant="subtitle1">{typo}</Styled.LiveTitle>;
@@ -112,9 +113,14 @@ const LiveList = (): JSX.Element => {
     };
   }, []);
 
+  const [showStartLive, setShowStartLive] = useState(false);
+  const startLiveOnClick = (): void => {
+    setShowStartLive((prev) => !prev);
+  };
+
   return (
     <Styled.Container>
-      <Header />
+      <Header startLiveOnClick={startLiveOnClick} />
       <Styled.LiveContainer>
         <SearchField />
         {[...Array(display * 4)].map((i: number) => (
@@ -129,6 +135,7 @@ const LiveList = (): JSX.Element => {
           onChange={handlePage}
         />
       </Styled.PaginationContainer>
+      {showStartLive ? <StartLive onClick={startLiveOnClick} /> : null}
     </Styled.Container>
   );
 };
