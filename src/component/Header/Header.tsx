@@ -58,20 +58,21 @@ const HeaderTypo = ({
   );
 };
 
-const Header = (): JSX.Element => {
+const Header = ({
+  startLiveOnClick,
+}: {
+  startLiveOnClick: MouseEventHandler;
+}): JSX.Element => {
   const navigate = useNavigate();
 
   const toMain = (): void => {
-    navigate("/main");
+    navigate("/");
   };
   const toMyPage = (): void => {
     navigate("/my-page");
   };
-  const toStartLive = (): void => {
-    navigate("/live");
-  };
   const toLiveList = (): void => {
-    navigate("/live-now");
+    navigate("/live-list");
   };
   const toLogin = (): void => {
     navigate("/login", { replace: true });
@@ -89,7 +90,7 @@ const Header = (): JSX.Element => {
         <HeaderIcon
           src1="https://cdn-icons-png.flaticon.com/512/1159/1159798.png"
           src2="https://cdn-icons-png.flaticon.com/512/1160/1160041.png"
-          onClick={toStartLive}
+          onClick={startLiveOnClick}
         />
         <HeaderIcon
           src1="https://cdn-icons-png.flaticon.com/512/2177/2177994.png"
