@@ -1,45 +1,59 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import * as Styled from "./Styled";
 import CloseIcon from "@mui/icons-material/Close";
 import { useNavigate } from "react-router";
 
 const StartLive = ({ onClick }: { onClick: any }): JSX.Element => {
-  const initialConstraints = {
-    audio: true,
-    video: true,
-  };
-  const cameraConstraints = {
-    audio: true,
-    video: true,
-  };
-  const [myStream, setMyStream] = useState(
-    navigator.mediaDevices.getUserMedia(initialConstraints)
-  );
-  const getMedia = async ({ deviceId }: { deviceId: string | null }) => {
-    const mystr = await navigator.mediaDevices.getUserMedia(
-      deviceId ? cameraConstraints : initialConstraints
-    );
-    setMyStream(mystr as any);
-  };
-
-  const [mute, setMute] = useState("MUTE");
-  const [cam, setCam] = useState("CAM OFF");
-
-  const handleMuteClick = (): void => {
-    setMute(mute === "MUTE" ? "UNMUTE" : "MUTE");
-  };
-  const handleCamClick = (): void => {
-    setCam(cam === "CAM OFF" ? "CAM ON" : "CAM OFF");
-  };
-
   const navigate = useNavigate();
   const handleEnter = (): void => {
     navigate("live-now");
   };
 
+  const cameraConstraints = {
+    audio: true,
+    video: { facingMode: "user" },
+  };
+
+  const [mute, setMute] = useState("MUTE");
+  const [cam, setCam] = useState("CAM OFF");
+
+  const [myStream, setMyStream] = useState<MediaStream>();
+
+  const handleMuteClick = (): void => {
+    if (myStream) {
+      myStream.getAudioTracks().forEach((track) => {
+        track.enabled = !track.enabled;
+      });
+    }
+    setMute(mute === "MUTE" ? "UNMUTE" : "MUTE");
+  };
+  const handleCamClick = (): void => {
+    if (myStream) {
+      myStream.getVideoTracks().forEach((track) => {
+        track.enabled = !track.enabled;
+      });
+    }
+    setCam(cam === "CAM OFF" ? "CAM ON" : "CAM OFF");
+  };
+
+  const videoRef = useRef<HTMLVideoElement>();
+  const myVideo = async () => {
+    const myVideo: any = await document.querySelector("#my-video");
+    navigator.mediaDevices.getUserMedia(cameraConstraints).then((mystr) => {
+      setMyStream(mystr);
+      if (myVideo) {
+        if ("srcObject" in myVideo) {
+          myVideo.srcObject = mystr;
+        }
+      }
+    });
+  };
+
+  // const vd: HTMLVideoElement | null = document.querySelector("#my-video");
   useEffect(() => {
-    // getMedia();
+    myVideo();
   }, []);
+
   return (
     <Styled.ModalContainer>
       <Styled.Modal>
@@ -48,7 +62,13 @@ const StartLive = ({ onClick }: { onClick: any }): JSX.Element => {
           <CloseIcon onClick={onClick} style={{ cursor: "pointer" }} />
         </Styled.ModalHeader>
         <Styled.ModalBody>
-          <Styled.MyStream />
+          <video
+            id="my-video"
+            autoPlay
+            playsInline
+            ref={videoRef as any}
+            style={{ width: "720px", height: "400px" }}
+          />
           <Styled.ModalButtonContainer>
             <Styled.ModalButton
               sx={{ m: 1 }}
