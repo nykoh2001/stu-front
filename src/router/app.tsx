@@ -5,6 +5,7 @@ import Login from "pages/Login/Login";
 import SignUp from "pages/SignUp/SignUp";
 import Main from "pages/Main/Main";
 import LiveList from "pages/LiveList/LiveList";
+import LiveNow from "pages/LiveNow/LiveNow";
 
 declare global {
   interface Window {
@@ -20,6 +21,7 @@ const App = () => {
         <Route path="/register" element={<SignUp />} />
         <Route path="/" element={<Main />} />
         <Route path="/live-list" element={<LiveList />} />
+        <Route path="/live-now" element={<LiveNow />} />
       </Routes>
     </BrowserRouter>
   );
