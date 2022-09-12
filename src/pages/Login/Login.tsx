@@ -40,14 +40,12 @@ const Login = (): JSX.Element => {
     navigate("/", { replace: true });
   };
 
-  const clickGoogleLogin = (): void => {
-    axios
-      .get("http://localhost:8080/oauth2/authorization/google")
-      .then((res) => {
-        console.log("res: ", res);
-      })
-      .catch((e) => console.log("err: ", e));
-  };
+  const APP_BASE_URL = "http://localhost:8080";
+  const OAUTH_REDIRECT_URL = "http://localhost:3000/oauth2/redirect";
+  const GOOGLE_OAUTH_LOGIN =
+    APP_BASE_URL +
+    "/oauth2/authorize/google?redirect_uri=" +
+    OAUTH_REDIRECT_URL;
 
   return (
     <Styled.Container>
@@ -68,7 +66,7 @@ const Login = (): JSX.Element => {
           </Button>
         </Styled.ButtonContainer>
         <Styled.ButtonContainer>
-          <Button onClick={clickGoogleLogin}>LOGIN WITH GOOGLE</Button>
+          <Button href={GOOGLE_OAUTH_LOGIN}>LOGIN WITH GOOGLE</Button>
         </Styled.ButtonContainer>
       </Styled.LoginForm>
     </Styled.Container>

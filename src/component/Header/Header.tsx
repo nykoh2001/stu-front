@@ -75,6 +75,7 @@ const Header = ({
     navigate("/live-list");
   };
   const toLogin = (): void => {
+    localStorage.removeItem("Authorization");
     navigate("/login", { replace: true });
   };
 
