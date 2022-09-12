@@ -1,8 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import * as Styled from "./Styled";
 import { Button } from "@mui/material";
 
 const LiveNow = (): JSX.Element => {
+  useEffect(() => {
+    if (!localStorage.getItem("Authorization")) {
+      window.location.replace("/login");
+    }
+  }, []);
   return (
     <Styled.Container>
       <Styled.LiveScreenContainer>

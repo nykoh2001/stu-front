@@ -1,8 +1,7 @@
-import React, { ChangeEventHandler, useState } from "react";
+import React, { ChangeEventHandler, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import * as Styled from "./Styled";
 import { Button } from "@mui/material";
-import axios from "axios";
 
 const Input = ({
   placeholder,
@@ -37,7 +36,9 @@ const Login = (): JSX.Element => {
   };
 
   const clickLogin = (): void => {
-    navigate("/", { replace: true });
+    if (localStorage.getItem("Authorization")) {
+      navigate("/", { replace: true });
+    }
   };
 
   const APP_BASE_URL = "http://localhost:8080";

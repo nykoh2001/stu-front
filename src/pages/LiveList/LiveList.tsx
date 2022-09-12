@@ -107,6 +107,9 @@ const LiveList = (): JSX.Element => {
   };
 
   useEffect(() => {
+    if (!localStorage.getItem("Authorization")) {
+      window.location.replace("/login");
+    }
     window.addEventListener("resize", handleResize);
     return () => {
       window.removeEventListener("resize", handleResize);

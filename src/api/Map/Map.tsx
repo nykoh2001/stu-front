@@ -1,7 +1,5 @@
 import React, { useEffect } from "react";
 import * as Styled from "./Styled";
-import { NEXT_PUBLIC_KAKAOMAP_APPKEY } from "util/global";
-import { MapsHomeWork } from "@mui/icons-material";
 
 interface MapProps {
   latitude: number;
@@ -13,7 +11,7 @@ const Map = ({ latitude, longitude }: MapProps): JSX.Element => {
     const mapScript = document.createElement("script");
 
     mapScript.async = true;
-    mapScript.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${NEXT_PUBLIC_KAKAOMAP_APPKEY}&autoload=false`;
+    mapScript.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${"51143a24dff8a6724f88a73459f698cb"}&autoload=false`;
 
     document.head.appendChild(mapScript);
 
